@@ -2,12 +2,20 @@
 #define MPU60X0_H
 
 #include <hal.h>
-
 #include <stdint.h>
+
 typedef struct {
     uint32_t config;
+#if HAL_USE_SPI
     SPIDriver *spi;
+#else
+    void *spi;
+#endif
+#if HAL_USE_I2C
     I2CDriver *i2c;
+#else
+    void *i2c_driver;
+#endif
     uint8_t i2c_address;
 } mpu60X0_t;
 
@@ -30,8 +38,12 @@ typedef struct {
 #define MPU60X0_LOW_PASS_FILTER_5           (5<<16) // acc: BW= 10Hz, delay=13.8ms, Fs=1kHz gyro: BW= 10Hz, delay=13.4ms, Fs=1kHz
 #define MPU60X0_LOW_PASS_FILTER_6           (6<<16) // acc: BW=  5Hz, delay=19.0ms, Fs=1kHz gyro: BW=  5Hz, delay=18.6ms, Fs=1kHz
 
+#if HAL_USE_SPI
 void mpu60X0_init_using_spi(mpu60X0_t *dev, SPIDriver *spi_dev);
+#endif
+#if HAL_USE_I2C
 void mpu60X0_init_using_i2c(mpu60X0_t *dev, I2CDriver *i2c_dev, int ad0_pin_value);
+#endif
 void mpu60X0_setup(mpu60X0_t *dev, int config);
 bool mpu60X0_ping(mpu60X0_t *dev);
 bool mpu60X0_self_test(mpu60X0_t *dev);
