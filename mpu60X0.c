@@ -110,7 +110,7 @@ void mpu60X0_setup(mpu60X0_t *dev, int config)
     mpu60X0_reg_write(dev, MPU60X0_RA_PWR_MGMT_1, MPU60X0_CLOCK_PLL_XGYRO);
     chThdSleepMilliseconds(1);
     if (dev->spi) { // disable I2C interface
-        mpu60X0_reg_write(dev, MPU60X0_RA_USER_CTRL, MPU60X0_USERCTRL_I2C_IF_DIS_BIT);
+        mpu60X0_reg_write(dev, MPU60X0_RA_USER_CTRL, MPU60X0_USERCTRL_I2C_IF_DIS);
         chThdSleepMilliseconds(1);
     }
     // gyro full scale
