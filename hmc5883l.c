@@ -88,9 +88,10 @@ int hmc5883l_read(hmc5883l_t *dev, float *mag)
         return 1;
     }
     gain = mag_gain[(dev->config >> 5) & 0x07];
+    // registers are [xh, xl, zh, zl, yh, yl]
     mag[0] = (float)((int16_t)(buf[0]<<8) | buf[1]) / gain;
-    mag[1] = (float)((int16_t)(buf[2]<<8) | buf[3]) / gain;
-    mag[2] = (float)((int16_t)(buf[4]<<8) | buf[5]) / gain;
+    mag[1] = (float)((int16_t)(buf[4]<<8) | buf[5]) / gain;
+    mag[2] = (float)((int16_t)(buf[2]<<8) | buf[3]) / gain;
     return 0;
 }
 
