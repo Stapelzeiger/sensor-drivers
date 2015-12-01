@@ -35,7 +35,7 @@ typedef struct {
 /* Returns true, if device ID is correct */
 bool hmc5883l_ping(hmc5883l_t *dev);
 
-/* Returns magnetic field vector {x,y,z} in Gauss. */
+/* Returns magnetic field vector {x,y,z} in Tesla. */
 int hmc5883l_read(hmc5883l_t *dev, float *mag);
 
 /* Initializes the HMC5883L device datastructure */

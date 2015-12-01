@@ -1,4 +1,3 @@
-
 #include <string.h>
 #include "hmc5883l.h"
 
@@ -17,6 +16,9 @@
 #define HMC5883L_REG_ID_C           12 // read as '3'
 
 #define HMC5883L_I2C_ADDR           0x1E
+
+#define GAUSS_TO_TESLA              0.0001
+
 
 static int hmc5883l_reg_write(hmc5883l_t *dev, uint8_t reg, uint8_t data);
 static int hmc5883l_reg_read(hmc5883l_t *dev, uint8_t reg, uint8_t *data);
@@ -78,7 +80,7 @@ bool hmc5883l_ping(hmc5883l_t *dev)
     return strcmp("H43", (const char *)buf) == 0;
 }
 
-/* Returns magnetic field vector {x,y,z} in Gauss. */
+/* Returns magnetic field vector {x,y,z} in Tesla. */
 int hmc5883l_read(hmc5883l_t *dev, float *mag)
 {
     static const uint16_t mag_gain[] = {1370, 1090, 820, 660, 440, 390, 330, 230};
@@ -89,9 +91,9 @@ int hmc5883l_read(hmc5883l_t *dev, float *mag)
     }
     gain = mag_gain[(dev->config >> 5) & 0x07];
     // registers are [xh, xl, zh, zl, yh, yl]
-    mag[0] = (float)((int16_t)(buf[0]<<8) | buf[1]) / gain;
-    mag[1] = (float)((int16_t)(buf[4]<<8) | buf[5]) / gain;
-    mag[2] = (float)((int16_t)(buf[2]<<8) | buf[3]) / gain;
+    mag[0] = (float)((int16_t)(buf[0]<<8) | buf[1]) / gain * GAUSS_TO_TESLA;
+    mag[1] = (float)((int16_t)(buf[4]<<8) | buf[5]) / gain * GAUSS_TO_TESLA;
+    mag[2] = (float)((int16_t)(buf[2]<<8) | buf[3]) / gain * GAUSS_TO_TESLA;
     return 0;
 }
 
