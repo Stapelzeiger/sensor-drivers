@@ -21,7 +21,6 @@
 
 
 static int hmc5883l_reg_write(hmc5883l_t *dev, uint8_t reg, uint8_t data);
-static int hmc5883l_reg_read(hmc5883l_t *dev, uint8_t reg, uint8_t *data);
 static int hmc5883l_reg_read_multi(hmc5883l_t *dev, uint8_t reg, uint8_t *data, uint8_t len);
 
 static int hmc5883l_reg_write(hmc5883l_t *dev, uint8_t reg, uint8_t data)
@@ -32,21 +31,6 @@ static int hmc5883l_reg_write(hmc5883l_t *dev, uint8_t reg, uint8_t data)
     msg_t msg;
 
     msg = i2cMasterTransmit(driver, addr, buf, 2, NULL, 0);
-
-    if (msg != MSG_OK) {
-        return 1;
-    }
-
-    return 0;
-}
-
-static int hmc5883l_reg_read(hmc5883l_t *dev, uint8_t reg, uint8_t *data)
-{
-    uint8_t addr = HMC5883L_I2C_ADDR;
-    I2CDriver *driver = dev->i2c_driver;
-    msg_t msg;
-
-    msg = i2cMasterTransmit(driver, addr, &reg, 1, data, 1);
 
     if (msg != MSG_OK) {
         return 1;
