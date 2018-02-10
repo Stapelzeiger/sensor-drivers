@@ -4,6 +4,7 @@ const float psi_to_Pa = 6894.7572932f;
 
 int ms4525do_init(ms4525do_t *drv, I2CDriver *i2c_driver, char output_type, char interface_type, int pressure_range, char pressure_type)
 {
+    drv->i2c_driver = NULL;
     switch (output_type) {
     case 'A':
         drv->output_scale_percent = 80;
