@@ -7,6 +7,10 @@ TEST_GROUP(MS4525DO)
     I2CDriver i2c;
     ms4525do_t d;
     uint16_t pressure_raw, temperature_raw;
+
+    void teardown() {
+        mock().clear();
+    }
 };
 
 TEST(MS4525DO, init_driver_pointer)
